@@ -1,16 +1,11 @@
 #!/usr/bin/env node
 
 
-// /*
-// /$$$$$$$$ /$$$$$$ / $$$$$$$ / $$$$$$$$ / $$$$$$ / $$ / $$ / $$$$$$ / $$$$$$$ / $$
-// | $$_____/|_  $$_/| $$__  $$| $$_____/ /$$__  $$| $$  | $$|_  $$_/| $$__  $$|__/
-// | $$        | $$  | $$  \ $$| $$      | $$  \__/| $$  | $$  | $$  | $$  \ $$ /$$  /$$$$$$
-// | $$$$$     | $$  | $$$$$$$/| $$$$$   |  $$$$$$ | $$$$$$$$  | $$  | $$$$$$$/| $$ /$$__  $$
-// | $$__/     | $$  | $$__  $$| $$__/    \____  $$| $$__  $$  | $$  | $$____/ | $$| $$  \ $$
-// | $$        | $$  | $$  \ $$| $$       /$$  \ $$| $$  | $$  | $$  | $$      | $$| $$  | $$
-// | $$       /$$$$$$| $$  | $$| $$$$$$$$|  $$$$$$/| $$  | $$ /$$$$$$| $$ /$$  | $$|  $$$$$$/
-// |__/      |______/|__/  |__/|________/ \______/ |__/  |__/|______/|__/|__/  |__/ \______/
-// */
+// ____  _   _ ____ __________ ____   ___  
+// / ___|| | | | __ )__  / ____|  _ \ / _ \ 
+// \___ \| | | |  _ \ / /|  _| | |_) | | | |
+//  ___) | |_| | |_) / /_| |___|  _ <| |_| |
+// |____/ \___/|____/____|_____|_| \_\\___/ 
 
 
 import chalk from 'chalk';
@@ -26,7 +21,7 @@ const sleep = (ms = 2000) => new Promise((r) => setTimeout(r, ms));
 
 async function welcome() {
   const rainbowTitle = chalkAnimation.rainbow(
-    'Who Wants To Be A JavaScript Millionaire? \n'
+    'JavaScript Mastermind Challenge \n'
   );
 
   await sleep();
@@ -146,6 +141,37 @@ async function question5() {
   return handleAnswer(answers.question_5 === 'non-blocking');
 }
 
+async function question6() {
+  const answers = await inquirer.prompt({
+    name: 'question_6',
+    type: 'list',
+    message: 'Which company developed JavaScript?\n',
+    choices: [
+      'Netscape',
+      'Microsoft',
+      'Sun Microsystems',
+      'IBM',
+    ],
+  });
+
+  return handleAnswer(answers.question_6 === 'Netscape');
+}
+
+async function question7() {
+  const answers = await inquirer.prompt({
+    name: 'question_7',
+    type: 'list',
+    message: 'Which method can be used to find the largest number in an array?\n',
+    choices: [
+      'Math.ceil()',
+      'Math.floor()',
+      'Math.max()',
+      'Math.min()',
+    ],
+  });
+
+  return handleAnswer(answers.question_7 === 'Math.max()');
+}
 // Run it with top-level await
 console.clear();
 await welcome();
@@ -155,4 +181,6 @@ await question2();
 await question3();
 await question4();
 await question5();
+await question6();
+await question7();
 winner();
