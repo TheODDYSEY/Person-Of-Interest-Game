@@ -1,72 +1,121 @@
+# Person of Interest: The Machine's Directive
 
-# Person of Interest Game
+Welcome to "Person of Interest: The Machine's Directive," an immersive CLI game inspired by the TV series *Person of Interest*. In this game, you'll navigate through a series of missions as a member of a covert team, making critical decisions that shape the fate of New York City. Your choices will influence the outcome of each mission and ultimately determine your success in the game.
 
 ![Person of Interest](./poi.jpg)
 
-Step into the high-stakes world of the hit TV series *Person of Interest*. In this immersive game, you'll join a secret team dedicated to preventing crimes before they happen. Make critical decisions, complete challenging missions, and become the hero that saves the day. Are you ready to take on the challenge?
-
-## Table of Contents
-- [Introduction](#introduction)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-
-## Introduction
-
-Welcome to the **Person of Interest Game**! Inspired by the acclaimed TV series, this game puts you in the shoes of key characters like John Reese, Harold Finch, Sameen Shaw, and Root. Each decision you make will influence the outcome of your missions, where success or failure is determined by your choices.
-
 ## Features
 
-- **Character Selection**: Choose to play as John Reese, Harold Finch, Sameen Shaw, or Root.
-- **Multiple Missions**: Engage in a variety of missions, each with branching paths and different outcomes based on your choices.
-- **Immersive Storyline**: Experience detailed scenarios that bring the intensity of the TV series to your command line.
-- **Real-time Decisions**: Make quick, strategic decisions to thwart potential threats and save lives.
+- **Character Choices**: Play as one of four characters from the series, each with their unique missions.
+- **Mission-Based Gameplay**: Complete a series of missions, each with different scenarios and choices.
+- **Interactive Decision-Making**: Make critical decisions that impact the game's progression.
+- **Progress Tracking**: Visualize your progress with a dynamic progress bar.
+- **Game Restart**: Restart the game if you make incorrect decisions.
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [Character Missions](#character-missions)
+- [Game Flow](#game-flow)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
 
 ## Installation
 
-To set up the game, follow these steps:
+To play "Person of Interest: The Machine's Directive," you need to have Node.js installed on your machine. Follow these steps to install the game:
 
-1. **Clone the Repository**:
+1. Clone the repository:
    ```bash
-   git clone https://github.com/THEODDYSYEY/person-of-interest-game.git
-   cd Quiz-CLI-Game
+   git clone https://github.com/TheODDYSEY/Person-Of-Interest-Game.git
    ```
 
-2. **Install Dependencies**:
+2. Navigate to the project directory:
+   ```bash
+   cd Person-Of-Interest-Game
+   ```
+
+3. Install the required dependencies:
    ```bash
    npm install
    ```
 
+4. Run the game:
+   ```bash
+   node index.js
+   ```
+
 ## Usage
 
-Start the game by running the following command:
+When you start the game, you will be prompted to:
 
-```bash
- node index.js
-```
+1. **Enter Your Name**: Provide your name to personalize the experience.
+2. **Choose a Character**: Select one of the four characters:
+   - John Reese
+   - Harold Finch
+   - Sameen Shaw
+   - Root
 
-Follow the on-screen prompts to dive into your first mission. Make your choices wisely to succeed.
+3. **Complete Missions**: Participate in missions specific to the chosen character. Each mission presents a scenario with multiple choices. Your goal is to make the right decisions to complete the mission successfully.
 
-## Contributing
+4. **Track Progress**: Your progress will be displayed as you complete each mission. If you fail a mission, the game will restart.
 
-We welcome contributions from the community! If you'd like to add new features, fix bugs, or improve the game, feel free to open a pull request or submit an issue.
+## Character Missions
 
-## License
+Each character has a unique set of missions. Here’s a brief overview:
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+### John Reese
 
----
+1. **Investigate a Lead**: Decide how to handle a dangerous lead.
+2. **Face an Adversary**: Choose a strategy when confronted with a known adversary.
+3. **Uncover a Conspiracy**: Determine your next move upon discovering a conspiracy.
+4. **Rescue a Witness**: Plan the rescue of a key witness.
+
+### Harold Finch
+
+1. **Protect the Machine**: Secure the Machine from discovery.
+2. **Ethical Dilemmas**: Address questions about the Machine’s use.
+3. **Cyber Attack**: Handle a cyber attack on your systems.
+4. **Recruit an Ally**: Decide how to bring a new ally into your team.
+
+### Sameen Shaw
+
+1. **Infiltrate an Organization**: Choose how to approach infiltrating a criminal organization.
+2. **Handle Personal Issues**: Deal with personal issues affecting your mission.
+3. **Track a Missing Person**: Develop a plan to find a missing person.
+4. **Make a Tough Decision**: Make critical decisions during a high-stakes mission.
+
+### Root
+
+1. **Extract Information**: Decide how to obtain vital data from a secured system.
+2. **Enhance the Machine**: Plan to enhance the Machine’s functionality.
+3. **Sabotage Rival’s Operation**: Choose how to disrupt a rival’s plans.
+4. **Protect the Machine**: Develop a strategy to safeguard the Machine from threats.
+
+## Game Flow
+
+1. **Introduction**: The game introduces you to the plot and objectives.
+2. **Name Input**: You provide your name.
+3. **Character Selection**: Choose your character.
+4. **Mission Execution**: Complete missions by making decisions.
+5. **Progress Tracking**: Monitor your progress through a progress bar.
+6. **Completion or Restart**: Finish the game if you succeed, or restart if you fail.
 
 ## Preview
 
-Here's a sneak peek at the game in action:
+Here’s a sneak peek at the game in action:
 
 ![Game Screenshot](./gameplay.png)
 
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Inspired by the TV series *Person of Interest*.
+- Utilizes various Node.js libraries, including `chalk`, `inquirer`, `gradient-string`, `chalk-animation`, `figlet`, `nanospinner`, and `cli-progress`.
+
 ---
 
-Dive into the world of *Person of Interest* and become the hero the city needs. Your mission starts now!
-
----
+Feel free to adjust the content based on any additional details or changes you make to the game!
