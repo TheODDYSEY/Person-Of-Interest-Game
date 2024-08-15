@@ -6,240 +6,362 @@ import gradient from 'gradient-string';
 import chalkAnimation from 'chalk-animation';
 import figlet from 'figlet';
 import { createSpinner } from 'nanospinner';
+import cliProgress from 'cli-progress';
+import { execSync } from 'child_process';
 
+// Game variables
 let playerName;
 let character;
+let progressBar;
+let missionIndex = 0;
 
+// Helper functions
 const sleep = (ms = 2000) => new Promise((r) => setTimeout(r, ms));
 
-const decisionTree = {
-  mission1: 'Hack into the bank\'s security cameras',
-  mission2: 'Follow the person',
-  mission3: 'Set up surveillance at the suspected location',
-  mission4: 'Track using surveillance cameras',
-  mission5: 'Secure the exits',
-  mission6: 'Use non-lethal force'
-};
+// Clear terminal
+const clearTerminal = () => execSync('clear'); // Use 'cls' for Windows
 
+// Game introduction
 async function welcome() {
   const rainbowTitle = chalkAnimation.rainbow(
-    'Person of Interest Game \n'
+    'Person of Interest: The Machine\'s Directive \n'
   );
 
   await sleep();
   rainbowTitle.stop();
 
   console.log(`
-    ${chalk.bgBlue('HOW TO PLAY')} 
-    You are a member of the team trying to prevent crimes before they happen.
-    Make the right choices to save lives and stop criminals.
-
+    ${chalk.bgBlue('WELCOME TO THE GAME')} 
+    You are a member of a covert team using advanced technology to prevent crimes before they happen.
+    Make crucial decisions and navigate through dangerous missions to shape the future of New York City.
+    Remember, every choice you make influences the outcome. 🕵️‍♂️💻
   `);
 }
 
-async function handleAnswer(isCorrect, mission) {
-  const spinner = createSpinner('Checking answer...').start();
+// Handle answers and update progress
+async function handleAnswer(isCorrect, season, mission) {
+  const spinner = createSpinner('Processing your decision...').start();
   await sleep();
 
   if (isCorrect) {
-    spinner.success({ text: `Nice work ${playerName}. You made the right decision!` });
-    displayTree(mission);
+    spinner.success({ text: `✅ Good job, ${playerName}. You made the right choice!` });
+    progressBar.increment();
   } else {
-    spinner.error({ text: `💀💀💀 Mission failed, you lose ${playerName}!` });
-    displayTree(mission);
-    process.exit(1);
+    spinner.error({ text: `💀 Mission failed, ${playerName}. Try again!` });
+    clearTerminal();
+    console.log(chalk.red(`\n💔 You've lost, ${playerName}. Restarting the game... 💔`));
+    await sleep();
+    return restartGame(); // Restart the game
   }
 }
 
+// Ask player for their name
 async function askName() {
   const answers = await inquirer.prompt({
     name: 'player_name',
     type: 'input',
     message: 'What is your name?',
     default() {
-      return 'Player';
+      return 'Agent';
     },
   });
 
   playerName = answers.player_name;
 }
 
+// Choose character
 async function chooseCharacter() {
   const answers = await inquirer.prompt({
     name: 'character',
     type: 'list',
     message: 'Choose your character:',
     choices: [
-      'John Reese',
-      'Harold Finch',
-      'Sameen Shaw',
-      'Root',
+      'John Reese: Former Special Forces operative 🕵️‍♂️',
+      'Harold Finch: Reclusive billionaire and tech genius 💻',
+      'Sameen Shaw: Former government operative with a tough demeanor 💪',
+      'Root: Mysterious hacker with a deep connection to the Machine 🧠',
     ],
   });
 
-  character = answers.character;
+  character = answers.character.split(':')[0].trim(); // Extract character name from choice
+  console.log(`\nYou have chosen ${character}. Let\'s begin your mission!`);
 }
 
-function success() {
+// Display game progress
+function displayProgress() {
+  console.log(`\nCurrent Mission Progress: ${progressBar.value}/${progressBar.total}`);
+}
+
+// Finish the game
+function finishGame() {
   console.clear();
-  figlet(`Mission Accomplished, ${playerName}!\n`, (err, data) => {
+  figlet(`Congratulations, ${playerName}!\n`, (err, data) => {
+    if (err) {
+      console.error('Error generating banner');
+      console.error(err);
+      process.exit(1);
+    }
     console.log(gradient.pastel.multiline(data) + '\n');
 
     console.log(
       chalk.green(
-        `Great job! You successfully completed the mission.`
+        `You have successfully completed the game. Your actions have influenced the fate of New York City and the future of the team. 🏆`
       )
     );
+    progressBar.stop();
     process.exit(0);
   });
 }
 
-function displayTree(currentMission) {
-  const missions = Object.keys(decisionTree);
-  const completed = missions.slice(0, missions.indexOf(currentMission) + 1);
-  const incomplete = missions.slice(missions.indexOf(currentMission) + 1);
-
-  console.log('\nDecision Tree:');
-  completed.forEach((mission) => {
-    console.log(`${chalk.green('✔')} ${mission}: ${decisionTree[mission]}`);
-  });
-
-  incomplete.forEach((mission) => {
-    console.log(`${chalk.red('✘')} ${mission}`);
-  });
-
-  console.log('\n');
+// Restart the game
+async function restartGame() {
+  await sleep(2000); // Brief delay before restarting
+  await main(); // Restart the main game function
 }
 
-async function mission1() {
-  const answers = await inquirer.prompt({
-    name: 'mission_1',
-    type: 'list',
-    message: 'A potential threat is identified at a local bank. What do you do?\n',
-    choices: [
-      'Investigate the bank discreetly',
-      'Alert the police immediately',
-      'Hack into the bank\'s security cameras',
-      'Ignore the threat',
-    ],
-  });
-
-  if (answers.mission_1 === 'Hack into the bank\'s security cameras') {
-    await handleAnswer(true, 'mission1');
-    return mission2();
-  } else {
-    await handleAnswer(false, 'mission1');
+// Randomize choices
+function randomizeChoices(choices) {
+  for (let i = choices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [choices[i], choices[j]] = [choices[j], choices[i]];
   }
 }
 
-async function mission2() {
+// Character-specific missions
+const missions = {
+  'John Reese': [
+    async () => mission(1, 1, {
+      description: 'Reese investigates a lead on a new threat in the city.',
+      prompt: '🔍 A lead on a dangerous group emerges. What do you do?\n',
+      choices: [
+        'Investigate the lead immediately 🚔',
+        'Set up surveillance and wait for more information 📹',
+        'Alert local law enforcement 🚓',
+        'Ignore the lead for now 🕵️‍♂️',
+      ],
+      correctAnswer: 'Investigate the lead immediately 🚔'
+    }),
+    async () => mission(1, 2, {
+      description: 'Reese faces off against a dangerous adversary.',
+      prompt: '💥 You encounter a known adversary. What is your strategy?\n',
+      choices: [
+        'Confront the adversary directly 💪',
+        'Gather intelligence and plan a careful attack 🕵️‍♂️',
+        'Seek help from allies 🤝',
+        'Retreat and regroup 🏃‍♂️',
+      ],
+      correctAnswer: 'Gather intelligence and plan a careful attack 🕵️‍♂️'
+    }),
+    async () => mission(1, 3, {
+      description: 'Reese uncovers a conspiracy.',
+      prompt: '🕵️‍♂️ You find evidence of a conspiracy. What is your next move?\n',
+      choices: [
+        'Investigate further to uncover the plot 🕵️‍♂️',
+        'Report the findings to the authorities 🗂️',
+        'Confront the people involved 😡',
+        'Destroy the evidence and leave it alone 🚫',
+      ],
+      correctAnswer: 'Investigate further to uncover the plot 🕵️‍♂️'
+    }),
+    async () => mission(1, 4, {
+      description: 'Reese is tasked with rescuing a key witness.',
+      prompt: '🚨 A witness is in danger. How do you proceed?\n',
+      choices: [
+        'Plan a covert rescue operation 🕵️‍♂️',
+        'Alert the police and coordinate with them 🚓',
+        'Attempt a direct rescue 🚨',
+        'Gather more information before taking action 🕵️‍♂️',
+      ],
+      correctAnswer: 'Plan a covert rescue operation 🕵️‍♂️'
+    }),
+  ],
+  'Harold Finch': [
+    async () => mission(2, 1, {
+      description: 'Finch works to protect the Machine from being discovered.',
+      prompt: '🛡️ You need to secure a location for the Machine. What is your approach?\n',
+      choices: [
+        'Use advanced encryption to secure communications 🔐',
+        'Relocate the Machine to a new secure location 🏢',
+        'Employ additional security measures 🛡️',
+        'Leave it as it is and monitor for threats 🕵️‍♂️',
+      ],
+      correctAnswer: 'Use advanced encryption to secure communications 🔐'
+    }),
+    async () => mission(2, 2, {
+      description: 'Finch faces ethical dilemmas about the Machine’s use.',
+      prompt: '⚖️ The Machine’s capabilities are questioned. How do you respond?\n',
+      choices: [
+        'Explain the benefits of the Machine 💬',
+        'Restrict its use to essential operations only 🔒',
+        'Seek external opinions on its use 🗣️',
+        'Reevaluate the Machine’s capabilities 🔍',
+      ],
+      correctAnswer: 'Explain the benefits of the Machine 💬'
+    }),
+    async () => mission(2, 3, {
+      description: 'Finch faces a cyber attack on his systems.',
+      prompt: '💻 A hacker is attempting to breach your systems. How do you handle it?\n',
+      choices: [
+        'Deploy countermeasures to stop the attack 🛡️',
+        'Identify and trace the hacker 🔍',
+        'Isolate affected systems and analyze the breach 🕵️‍♂️',
+        'Wait and see if the attack subsides on its own ⏳',
+      ],
+      correctAnswer: 'Deploy countermeasures to stop the attack 🛡️'
+    }),
+    async () => mission(2, 4, {
+      description: 'Finch needs to recruit a new ally.',
+      prompt: '🤝 You need to bring someone into your team. What is your strategy?\n',
+      choices: [
+        'Offer them a high-stakes mission 🎯',
+        'Persuade them with a compelling argument 💬',
+        'Provide evidence of the Machine’s capabilities 💻',
+        'Gain their trust through small tasks 🕵️‍♂️',
+      ],
+      correctAnswer: 'Provide evidence of the Machine’s capabilities 💻'
+    }),
+  ],
+  'Sameen Shaw': [
+    async () => mission(3, 1, {
+      description: 'Shaw goes undercover to investigate a powerful criminal organization.',
+      prompt: '🕵️‍♀️ You need to infiltrate a criminal organization. How do you approach this?\n',
+      choices: [
+        'Use a cover identity to blend in 🕵️‍♀️',
+        'Gather intelligence from insiders 🕵️‍♀️',
+        'Perform a direct assault on their base 🚨',
+        'Use surveillance to monitor their activities 📹',
+      ],
+      correctAnswer: 'Use a cover identity to blend in 🕵️‍♀️'
+    }),
+    async () => mission(3, 2, {
+      description: 'Shaw is dealing with personal issues while on a mission.',
+      prompt: '💔 Personal problems are affecting your mission. How do you handle it?\n',
+      choices: [
+        'Confront the challenge directly 💪',
+        'Seek help from a trusted ally 🕵️‍♀️',
+        'Set aside personal issues for now and focus on the mission 🎯',
+        'Reevaluate your priorities and make a decision 🔍',
+      ],
+      correctAnswer: 'Set aside personal issues for now and focus on the mission 🎯'
+    }),
+    async () => mission(3, 3, {
+      description: 'Shaw must track down a missing person.',
+      prompt: '🕵️‍♀️ A crucial person is missing. What is your plan to find them?\n',
+      choices: [
+        'Use all available resources to track them down 🔍',
+        'Interview people who might know their whereabouts 🗣️',
+        'Analyze recent activities and patterns 📊',
+        'Wait for them to make contact on their own ⏳',
+      ],
+      correctAnswer: 'Use all available resources to track them down 🔍'
+    }),
+    async () => mission(3, 4, {
+      description: 'Shaw needs to make a tough decision during a high-stakes mission.',
+      prompt: '🔥 You’re in a high-stakes situation. What decision do you make?\n',
+      choices: [
+        'Prioritize the mission objectives over personal safety 🎯',
+        'Ensure the safety of your team members first 🛡️',
+        'Seek a compromise that minimizes risks ⚖️',
+        'Abort the mission if the risks are too high 🚫',
+      ],
+      correctAnswer: 'Prioritize the mission objectives over personal safety 🎯'
+    }),
+  ],
+  'Root': [
+    async () => mission(4, 1, {
+      description: 'Root uses her skills to extract vital information.',
+      prompt: '💻 You need crucial data from a secured system. What is your approach?\n',
+      choices: [
+        'Hack into the system discreetly 🔓',
+        'Use social engineering to gain access 🕵️‍♀️',
+        'Collaborate with an insider 🧩',
+        'Try to obtain the data through legal means 📜',
+      ],
+      correctAnswer: 'Hack into the system discreetly 🔓'
+    }),
+    async () => mission(4, 2, {
+      description: 'Root works on a plan to enhance the Machine’s capabilities.',
+      prompt: '⚙️ You need to enhance the Machine’s functionality. What do you do?\n',
+      choices: [
+        'Implement new algorithms and updates 💻',
+        'Upgrade hardware components 🖥️',
+        'Increase security measures 🔒',
+        'Consult with Finch for additional input 💬',
+      ],
+      correctAnswer: 'Implement new algorithms and updates 💻'
+    }),
+    async () => mission(4, 3, {
+      description: 'Root attempts to sabotage a rival’s operation.',
+      prompt: '💣 You need to disrupt a rival’s plans. What is your approach?\n',
+      choices: [
+        'Infiltrate their operation and gather intel 🕵️‍♀️',
+        'Disrupt their communications 📞',
+        'Deploy a counter-operation to sabotage their efforts 💣',
+        'Leak false information to mislead them 📰',
+      ],
+      correctAnswer: 'Deploy a counter-operation to sabotage their efforts 💣'
+    }),
+    async () => mission(4, 4, {
+      description: 'Root plans an elaborate scheme to protect the Machine.',
+      prompt: '🛡️ You need to devise a plan to safeguard the Machine from imminent threats. How do you proceed?\n',
+      choices: [
+        'Create a multi-layered security protocol 🔐',
+        'Develop a backup system to secure the Machine 🖥️',
+        'Implement new privacy measures and encryption 🔒',
+        'Establish a decoy operation to mislead potential threats 🎭',
+      ],
+      correctAnswer: 'Create a multi-layered security protocol 🔐'
+    }),
+  ],
+};
+
+// Main mission function
+async function mission(season, missionNumber, { description, prompt, choices, correctAnswer }) {
+  console.log(`\nSeason ${season}: ${description}`);
+  
+  // Randomize choices for the mission
+  const randomizedChoices = [...choices];
+  randomizeChoices(randomizedChoices);
+  
   const answers = await inquirer.prompt({
-    name: 'mission_2',
+    name: `season${season}_mission${missionNumber}`,
     type: 'list',
-    message: 'A suspicious person is seen near a high-profile target. What\'s your next step?\n',
-    choices: [
-      'Follow the person',
-      'Confront the person directly',
-      'Alert the target',
-      'Monitor from a distance',
-    ],
+    message: prompt,
+    choices: randomizedChoices,
   });
 
-  if (answers.mission_2 === 'Follow the person') {
-    await handleAnswer(true, 'mission2');
-    return mission3();
-  } else {
-    await handleAnswer(false, 'mission2');
+  const isCorrect = answers[`season${season}_mission${missionNumber}`] === correctAnswer;
+  await handleAnswer(isCorrect, `Season ${season}`, `Mission ${missionNumber}`);
+  
+  // Move to next mission if correct
+  if (isCorrect) {
+    missionIndex++;
+    if (missionIndex < missions[character].length) {
+      displayProgress();
+      await missions[character][missionIndex]();
+    } else {
+      finishGame();
+    }
   }
 }
 
-async function mission3() {
-  const answers = await inquirer.prompt({
-    name: 'mission_3',
-    type: 'list',
-    message: `You intercepted a message about an imminent attack. What do you do?\n`,
-    choices: [
-      'Trace the source of the message',
-      'Warn potential victims',
-      'Set up surveillance at the suspected location',
-      'Ignore it as a hoax',
-    ],
-  });
+// Initialize progress bar
+progressBar = new cliProgress.SingleBar({
+  format: 'Progress |' + '{bar}' + '| {percentage}% | {value}/{total} Missions',
+  hideCursor: true,
+}, cliProgress.Presets.shades_classic);
 
-  if (answers.mission_3 === 'Set up surveillance at the suspected location') {
-    await handleAnswer(true, 'mission3');
-    return mission4();
-  } else {
-    await handleAnswer(false, 'mission3');
+// Run the game
+async function main() {
+  console.clear();
+  progressBar.start(16, 0); // Adjust total steps based on missions
+  await welcome();
+  await askName();
+  await chooseCharacter();
+  missionIndex = 0; // Reset mission index
+  for (const missionFn of missions[character]) {
+    await missionFn();
   }
 }
 
-async function mission4() {
-  const answers = await inquirer.prompt({
-    name: 'mission_4',
-    type: 'list',
-    message: 'The suspect is on the move. How do you proceed?\n',
-    choices: [
-      'Pursue on foot',
-      'Call for backup',
-      'Set up a roadblock',
-      'Track using surveillance cameras',
-    ],
-  });
-
-  if (answers.mission_4 === 'Track using surveillance cameras') {
-    await handleAnswer(true, 'mission4');
-    return mission5();
-  } else {
-    await handleAnswer(false, 'mission4');
-  }
-}
-
-async function mission5() {
-  const answers = await inquirer.prompt({
-    name: 'mission_5',
-    type: 'list',
-    message: 'The suspect has entered a building. What\'s your next move?\n',
-    choices: [
-      'Enter the building alone',
-      'Wait for backup',
-      'Secure the exits',
-      'Monitor from outside',
-    ],
-  });
-
-  if (answers.mission_5 === 'Secure the exits') {
-    await handleAnswer(true, 'mission5');
-    return mission6();
-  } else {
-    await handleAnswer(false, 'mission5');
-  }
-}
-
-async function mission6() {
-  const answers = await inquirer.prompt({
-    name: 'mission_6',
-    type: 'list',
-    message: 'The suspect is cornered but armed. How do you handle it?\n',
-    choices: [
-      'Negotiate',
-      'Use non-lethal force',
-      'Call for SWAT',
-      'Wait it out',
-    ],
-  });
-
-  if (answers.mission_6 === 'Use non-lethal force') {
-    await handleAnswer(true, 'mission6');
-    success();
-  } else {
-    await handleAnswer(false, 'mission6');
-  }
-}
-
-// Run it with top-level await
-console.clear();
-await welcome();
-await askName();
-await chooseCharacter();
-await mission1();
+main();
