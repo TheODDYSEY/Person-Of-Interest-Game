@@ -30,7 +30,7 @@ To set up the game, follow these steps:
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/THEODDYSYEY/person-of-interest-game.git
+   git clone https://github.com/TheODDYSEY/Person-Of-Interest-Game.git
    cd Quiz-CLI-Game
    ```
 
