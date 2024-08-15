@@ -67,12 +67,6 @@ Here's a sneak peek at the game in action:
 
 ---
 
-## Contact
-
-For any questions or suggestions, feel free to reach out. Happy playing!
-
----
-
 Dive into the world of *Person of Interest* and become the hero the city needs. Your mission starts now!
 
 ---
