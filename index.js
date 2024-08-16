@@ -1,10 +1,6 @@
 #!/usr/bin/env node
 
-const chalk = require('chalk');
-const inquirer = require('inquirer');
-const gradient = require('gradient-string');
-const chalkAnimation = require('chalk-animation');
-const figlet = require('figlet');
+// Use dynamic import for ES modules
 const { createSpinner } = require('nanospinner');
 const cliProgress = require('cli-progress');
 const { execSync } = require('child_process');
@@ -23,6 +19,9 @@ const clearTerminal = () => execSync('clear'); // Use 'cls' for Windows
 
 // Game introduction
 async function welcome() {
+  const chalk = (await import('chalk')).default;
+  const chalkAnimation = (await import('chalk-animation')).default;
+
   const rainbowTitle = chalkAnimation.rainbow(
     'Person of Interest: The Machine\'s Directive \n'
   );
@@ -40,6 +39,7 @@ async function welcome() {
 
 // Handle answers and update progress
 async function handleAnswer(isCorrect, season, mission) {
+  const chalk = (await import('chalk')).default;
   const spinner = createSpinner('Processing your decision...').start();
   await sleep();
 
@@ -57,6 +57,7 @@ async function handleAnswer(isCorrect, season, mission) {
 
 // Ask player for their name
 async function askName() {
+  const inquirer = (await import('inquirer')).default;
   const answers = await inquirer.prompt({
     name: 'player_name',
     type: 'input',
@@ -71,6 +72,7 @@ async function askName() {
 
 // Choose character
 async function chooseCharacter() {
+  const inquirer = (await import('inquirer')).default;
   const answers = await inquirer.prompt({
     name: 'character',
     type: 'list',
@@ -93,7 +95,11 @@ function displayProgress() {
 }
 
 // Finish the game
-function finishGame() {
+async function finishGame() {
+  const chalk = (await import('chalk')).default;
+  const figlet = (await import('figlet')).default;
+  const gradient = (await import('gradient-string')).default;
+
   console.clear();
   figlet(`Congratulations, ${playerName}!\n`, (err, data) => {
     if (err) {
@@ -223,8 +229,8 @@ const missions = {
   ],
   'Sameen Shaw': [
     async () => mission(3, 1, {
-      description: 'Shaw goes undercover to investigate a powerful criminal organization.',
-      prompt: '🕵️‍♀️ You need to infiltrate a criminal organization. How do you approach this?\n',
+      description: 'Shaw is undercover in a hostile environment.',
+      prompt: '🔍 You’re undercover and need to blend in. What is your approach?\n',
       choices: [
         'Use a false identity and blend in 👤',
         'Gather intel from informants 🗣️',
@@ -317,9 +323,12 @@ const missions = {
 
 // Function to display mission information
 async function mission(season, missionNumber, { description, prompt, choices, correctAnswer }) {
-  console.clear();
+  clearTerminal();
+  const chalk = (await import('chalk')).default;
   console.log(chalk.yellow.bold(`Season ${season} - Mission ${missionNumber}`));
   console.log(`\n${description}`);
+  
+  const inquirer = (await import('inquirer')).default;
   const answer = await inquirer.prompt({
     name: 'choice',
     type: 'list',
@@ -339,7 +348,7 @@ async function main() {
 
   // Initialize progress bar
   progressBar = new cliProgress.SingleBar({
-    format: 'Progress |' + chalk.green('{bar}') + '| {percentage}% | {value}/{total} Missions',
+    format: 'Progress |' + (await import('chalk')).default.green('{bar}') + '| {percentage}% | {value}/{total} Missions',
     hideCursor: true,
   }, cliProgress.Presets.shades_classic);
 
@@ -350,6 +359,7 @@ async function main() {
   while (missionIndex < 4) {
     const currentCharacterMissions = missions[character];
     if (!currentCharacterMissions) {
+      const chalk = (await import('chalk')).default;
       console.log(chalk.red(`\nCharacter ${character} not found.`));
       break;
     }
