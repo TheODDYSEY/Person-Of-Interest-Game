@@ -1,6 +1,6 @@
 {
   "name": "person-of-interest-game",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "An immersive CLI game inspired by the TV series Person of Interest.",
   "main": "index.js",
   "bin": {

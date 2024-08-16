@@ -15,7 +15,14 @@ let missionIndex = 0;
 const sleep = (ms = 2000) => new Promise((r) => setTimeout(r, ms));
 
 // Clear terminal
-const clearTerminal = () => execSync('clear'); // Use 'cls' for Windows
+const clearTerminal = () => {
+  const platform = process.platform;
+  if (platform === 'win32') {
+    execSync('cls');
+  } else {
+    execSync('clear');
+  }
+};
 
 // Game introduction
 async function welcome() {
@@ -219,160 +226,134 @@ const missions = {
       description: 'Finch needs to recruit a new ally.',
       prompt: '🤝 You need to bring someone into your team. What is your strategy?\n',
       choices: [
-        'Offer them a high-stakes mission 🎯',
-        'Persuade them with a compelling argument 💬',
-        'Provide evidence of the Machine’s capabilities 💻',
-        'Gain their trust through small tasks 🕵️‍♂️',
+        'Approach them with a detailed plan 📋',
+        'Offer them incentives and rewards 💰',
+        'Build a relationship and earn their trust 🤝',
+        'Use connections to persuade them 🗣️',
       ],
-      correctAnswer: 'Provide evidence of the Machine’s capabilities 💻'
+      correctAnswer: 'Build a relationship and earn their trust 🤝'
     }),
   ],
   'Sameen Shaw': [
     async () => mission(3, 1, {
-      description: 'Shaw is undercover in a hostile environment.',
-      prompt: '🔍 You’re undercover and need to blend in. What is your approach?\n',
+      description: 'Shaw goes undercover to infiltrate a dangerous group.',
+      prompt: '🕵️‍♀️ You need to blend in with a dangerous group. How do you proceed?\n',
       choices: [
-        'Use a false identity and blend in 👤',
-        'Gather intel from informants 🗣️',
-        'Directly confront the organization 😠',
-        'Coordinate with law enforcement 🚓',
+        'Adopt their mannerisms and habits 🎭',
+        'Gather intelligence while remaining distant 🔍',
+        'Act confidently and gain their trust 💬',
+        'Avoid direct interaction and gather intel from afar 🕵️‍♀️',
       ],
-      correctAnswer: 'Use a false identity and blend in 👤'
+      correctAnswer: 'Act confidently and gain their trust 💬'
     }),
     async () => mission(3, 2, {
-      description: 'Shaw must negotiate with a dangerous contact.',
-      prompt: '🗣️ You need to negotiate with a dangerous contact. What’s your approach?\n',
+      description: 'Shaw must handle a hostage situation.',
+      prompt: '🚨 You’re faced with a hostage crisis. What’s your plan?\n',
       choices: [
-        'Be firm and assertive 💪',
-        'Offer them something valuable 💎',
-        'Attempt to manipulate their emotions 😈',
-        'Seek a middle ground and compromise 🤝',
+        'Negotiate with the captors 🗣️',
+        'Attempt a rescue operation 💪',
+        'Provide tactical support to responders 🛡️',
+        'Wait for more information before acting ⏳',
       ],
-      correctAnswer: 'Be firm and assertive 💪'
+      correctAnswer: 'Negotiate with the captors 🗣️'
     }),
     async () => mission(3, 3, {
-      description: 'Shaw encounters a betrayal within her team.',
-      prompt: '💔 One of your team members has betrayed you. What do you do?\n',
+      description: 'Shaw uncovers a corruption scandal.',
+      prompt: '📉 You discover a major corruption scandal. What is your next step?\n',
       choices: [
-        'Confront them directly 😠',
-        'Investigate the reasons behind the betrayal 🔍',
-        'Remove them from the team immediately 🚫',
-        'Seek reconciliation and understand their motives 🤝',
+        'Report it to the authorities 🗂️',
+        'Investigate further to uncover the full extent 🔍',
+        'Leak the information to the media 📰',
+        'Confront the individuals involved directly 😡',
       ],
-      correctAnswer: 'Investigate the reasons behind the betrayal 🔍'
+      correctAnswer: 'Investigate further to uncover the full extent 🔍'
     }),
     async () => mission(3, 4, {
-      description: 'Shaw faces a moral dilemma during a high-stakes operation.',
-      prompt: '⚖️ You are faced with a difficult decision during an operation. How do you handle it?\n',
+      description: 'Shaw is assigned to protect a key witness.',
+      prompt: '🔒 You need to protect a key witness from danger. How do you approach it?\n',
       choices: [
-        'Prioritize the mission objectives over personal morals 💼',
-        'Balance mission success with ethical considerations ⚖️',
-        'Seek advice from a trusted ally 🤝',
-        'Abort the mission and reassess the situation 🛑',
+        'Enhance their security with surveillance 🕵️‍♀️',
+        'Arrange safe transport and relocation 🚐',
+        'Work with local authorities for protection 🚓',
+        'Isolate them in a secure location 🔐',
       ],
-      correctAnswer: 'Balance mission success with ethical considerations ⚖️'
+      correctAnswer: 'Arrange safe transport and relocation 🚐'
     }),
   ],
   'Root': [
     async () => mission(4, 1, {
-      description: 'Root uncovers a hidden agenda within the organization.',
-      prompt: '🕵️‍♀️ You discover a hidden agenda. What is your course of action?\n',
+      description: 'Root must handle a sensitive data breach.',
+      prompt: '📉 A data breach has occurred. What is your response?\n',
       choices: [
-        'Investigate further to uncover the truth 🔍',
-        'Alert the highest authority 🗣️',
-        'Confront the people involved 😡',
-        'Keep the information to yourself for now 🤫',
+        'Contain and neutralize the breach immediately 🔒',
+        'Analyze the breach to understand its origin 🔍',
+        'Alert the affected parties and work on mitigation 🛡️',
+        'Review and strengthen security measures 🔐',
       ],
-      correctAnswer: 'Investigate further to uncover the truth 🔍'
+      correctAnswer: 'Contain and neutralize the breach immediately 🔒'
     }),
     async () => mission(4, 2, {
-      description: 'Root faces a challenge in decrypting sensitive data.',
-      prompt: '💻 You need to decrypt sensitive data. What is your strategy?\n',
+      description: 'Root needs to recruit a hacker for a mission.',
+      prompt: '🖥️ You need to recruit a skilled hacker. What is your approach?\n',
       choices: [
-        'Use advanced decryption tools 🔐',
-        'Seek help from an expert 🧠',
-        'Attempt a manual decryption 🛠️',
-        'Wait for a breakthrough from the Machine 🕵️‍♀️',
+        'Offer a lucrative deal 💰',
+        'Build rapport and trust 🤝',
+        'Leverage existing connections 🔗',
+        'Demonstrate the importance of the mission 🗣️',
       ],
-      correctAnswer: 'Use advanced decryption tools 🔐'
+      correctAnswer: 'Build rapport and trust 🤝'
     }),
     async () => mission(4, 3, {
-      description: 'Root must decode a cryptic message.',
-      prompt: '🗝️ A cryptic message needs to be decoded. How do you proceed?\n',
+      description: 'Root faces a moral dilemma involving surveillance.',
+      prompt: '🔍 You need to make a decision about extensive surveillance. What do you do?\n',
       choices: [
-        'Use pattern recognition techniques 🔍',
-        'Consult with experts in cryptography 🧠',
-        'Attempt to decode manually 🛠️',
-        'Wait for further instructions from the Machine 🕵️‍♀️',
+        'Implement it for national security 🛡️',
+        'Consider the ethical implications 🗣️',
+        'Seek consensus from key stakeholders 🤝',
+        'Limit the scope and monitor closely 📊',
       ],
-      correctAnswer: 'Use pattern recognition techniques 🔍'
+      correctAnswer: 'Consider the ethical implications 🗣️'
     }),
     async () => mission(4, 4, {
-      description: 'Root is tasked with recruiting a key ally.',
-      prompt: '🤝 You need to recruit a key ally. What is your approach?\n',
+      description: 'Root is tasked with analyzing a large dataset.',
+      prompt: '📊 You need to analyze a vast amount of data. How do you approach it?\n',
       choices: [
-        'Present compelling evidence of your cause 🗂️',
-        'Offer them a significant reward 💎',
-        'Build a personal relationship 🤝',
-        'Demonstrate the benefits of joining you 💼',
+        'Use advanced data mining techniques 📈',
+        'Segment the data and analyze in parts 🗂️',
+        'Employ machine learning algorithms 🤖',
+        'Work with a team of analysts 🧑‍💻',
       ],
-      correctAnswer: 'Present compelling evidence of your cause 🗂️'
+      correctAnswer: 'Use advanced data mining techniques 📈'
     }),
   ],
 };
 
-// Function to display mission information
-async function mission(season, missionNumber, { description, prompt, choices, correctAnswer }) {
-  clearTerminal();
-  const chalk = (await import('chalk')).default;
-  console.log(chalk.yellow.bold(`Season ${season} - Mission ${missionNumber}`));
-  console.log(`\n${description}`);
-  
-  const inquirer = (await import('inquirer')).default;
-  const answer = await inquirer.prompt({
-    name: 'choice',
-    type: 'list',
-    message: prompt,
-    choices: choices,
-  });
-
-  await handleAnswer(answer.choice === correctAnswer, season, missionNumber);
-}
-
-// Main game loop
+// Main function
 async function main() {
   clearTerminal();
   await welcome();
   await askName();
   await chooseCharacter();
-
+  
   // Initialize progress bar
   progressBar = new cliProgress.SingleBar({
-    format: 'Progress |' + (await import('chalk')).default.green('{bar}') + '| {percentage}% | {value}/{total} Missions',
+    format: 'Progress |{bar}| {percentage}% || {value}/{total} Missions',
     hideCursor: true,
   }, cliProgress.Presets.shades_classic);
 
-  // Set progress bar total
-  progressBar.start(4, 0);
+  // Set total missions based on character
+  const totalMissions = missions[character]?.length || 0;
+  progressBar.start(totalMissions, 0);
 
-  // Game loop
-  while (missionIndex < 4) {
-    const currentCharacterMissions = missions[character];
-    if (!currentCharacterMissions) {
-      const chalk = (await import('chalk')).default;
-      console.log(chalk.red(`\nCharacter ${character} not found.`));
-      break;
-    }
-
-    // Execute mission for the current character
-    await currentCharacterMissions[missionIndex]();
+  while (missionIndex < totalMissions) {
+    clearTerminal();
+    await missions[character][missionIndex]();
     displayProgress();
     missionIndex++;
-
-    if (missionIndex === 4) {
-      finishGame();
-    }
   }
+
+  await finishGame();
 }
 
-main();
+// Start the game
+main().catch(console.error);
