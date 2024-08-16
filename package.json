@@ -1,6 +1,6 @@
 {
   "name": "person-of-interest-game",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "An immersive CLI game inspired by the TV series Person of Interest.",
   "main": "index.js",
   "bin": {
@@ -18,8 +18,8 @@
   "license": "MIT",
   "dependencies": {
     "chalk": "^5.0.0",
-    "chalk-animation": "^3.0.0",
-    "cli-progress": "^4.0.0",
+    "chalk-animation": "^2.0.0",
+    "cli-progress": "^3.12.0",
     "figlet": "^1.5.0",
     "gradient-string": "^1.1.0",
     "inquirer": "^9.0.0",
