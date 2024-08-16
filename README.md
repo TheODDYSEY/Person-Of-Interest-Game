@@ -23,27 +23,16 @@ Welcome to "Person of Interest: The Machine's Directive," an immersive CLI game 
 
 ## Installation
 
-To play "Person of Interest: The Machine's Directive," you need to have Node.js installed on your machine. Follow these steps to install the game:
+To play "Person of Interest: The Machine's Directive," you can install it directly from npm. Follow these steps to get started:
 
-1. Clone the repository:
+1. **Install the Game**:
    ```bash
-   git clone https://github.com/TheODDYSEY/Person-Of-Interest-Game.git
+   npm install -g person-of-interest-game
    ```
 
-2. Navigate to the project directory:
+2. **Run the Game**:
    ```bash
-   cd Person-Of-Interest-Game
-
-   ```
-
-3. Install the required dependencies:
-   ```bash
-   npm install
-   ```
-
-4. Run the game:
-   ```bash
-   node index.js
+   poi-game
    ```
 
 ## Usage
@@ -116,3 +105,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Inspired by the TV series *Person of Interest*.
 - Utilizes various Node.js libraries, including `chalk`, `inquirer`, `gradient-string`, `chalk-animation`, `figlet`, `nanospinner`, and `cli-progress`.
+
