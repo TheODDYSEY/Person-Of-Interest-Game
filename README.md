@@ -27,13 +27,13 @@ To play "Person of Interest: The Machine's Directive," you need to have Node.js 
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/TheODDYSEY/Person-Of-Interest-Game.git
    ```
 
 2. Navigate to the project directory:
    ```bash
-   cd <project-directory>
-   
+   cd Person-Of-Interest-Game
+
    ```
 
 3. Install the required dependencies:
@@ -43,7 +43,7 @@ To play "Person of Interest: The Machine's Directive," you need to have Node.js 
 
 4. Run the game:
    ```bash
-   npm start
+   node index.js
    ```
 
 ## Usage
