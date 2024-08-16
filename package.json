@@ -1,21 +1,28 @@
 {
-  "name": "quiz-cli-game",
+  "name": "person-of-interest-game",
   "version": "1.0.0",
+  "description": "An immersive CLI game inspired by the TV series Person of Interest.",
   "main": "index.js",
-  "type": "module",
+  "bin": {
+    "poi-game": "./index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": [
+    "cli",
+    "game",
+    "person-of-interest"
+  ],
+  "author": "TheODDYSEY",
+  "license": "MIT",
   "dependencies": {
-    "chalk": "^5.3.0",
-    "chalk-animation": "^2.0.3",
-    "figlet": "^1.7.0",
-    "gradient-string": "^2.0.2",
-    "inquirer": "^9.2.23",
-    "nanospinner": "^1.1.0"
+    "chalk": "^5.0.0",
+    "chalk-animation": "^3.0.0",
+    "cli-progress": "^4.0.0",
+    "figlet": "^1.5.0",
+    "gradient-string": "^1.1.0",
+    "inquirer": "^9.0.0",
+    "nanospinner": "^1.0.0"
   }
 }
