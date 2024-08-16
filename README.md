@@ -27,12 +27,13 @@ To play "Person of Interest: The Machine's Directive," you need to have Node.js 
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/TheODDYSEY/Person-Of-Interest-Game.git
+   git clone <repository-url>
    ```
 
 2. Navigate to the project directory:
    ```bash
-   cd Person-Of-Interest-Game
+   cd <project-directory>
+   
    ```
 
 3. Install the required dependencies:
@@ -42,7 +43,7 @@ To play "Person of Interest: The Machine's Directive," you need to have Node.js 
 
 4. Run the game:
    ```bash
-   node index.js
+   npm start
    ```
 
 ## Usage
@@ -115,7 +116,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Inspired by the TV series *Person of Interest*.
 - Utilizes various Node.js libraries, including `chalk`, `inquirer`, `gradient-string`, `chalk-animation`, `figlet`, `nanospinner`, and `cli-progress`.
-
----
-
-Feel free to adjust the content based on any additional details or changes you make to the game!
